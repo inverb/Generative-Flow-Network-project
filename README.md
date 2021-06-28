@@ -25,8 +25,7 @@ We want to use generative flow to generate images similar to the ones in MNIST. 
     ├── docs/                   # notebooks with project reports
     ├── models/                 # links to best models and their training logs
     ├── scripts/                # scripts used for training and evaluation
-    ├── src/               	    # source code of the training and models
-    └── main.py                 # main file to execute training
+    └── src/                    # source code of the training and models
 
 ## Models
 
@@ -40,16 +39,16 @@ Then, during evaluation we just abandon phase one and, starting from some known 
 
 ### NICE
 
-NICE (Non-linear Independent Components Estimation) model uses simplest possible flow functions, which are partially and identity and partially just and additive function:
+[NICE](https://arxiv.org/pdf/1410.8516.pdf) (Non-linear Independent Components Estimation) model uses simplest possible flow functions. In every layer some elements **x**<sub>1:d</sub> of input are just written to output, and to other **x**<sub>d:D</sub> some function *m* is applied. This takes as its input elements **x**<sub>1:d</sub> and can be added, mulpiplied or in other form interact with **x**<sub>d:D</sub>. Here is an example when **m** is added to the inputs (which is also the case in our implementation):
 
-![Real NVP equations](./docs/nice_equations.png)
+![NICE equations](./docs/nice_equations.png)
 
 Of course positions on which there is identity are different between layers, especially between neighbouring ones. Here function *m* can be arbitrary, as we don't calculate its inversion. Therefore this function is the parameter that our model is learning.
 As we can see simplicity of *f*<sub>i</sub> makes inversions simple and it also allows us to use log likelihood as out loss function.
 
 ### Real NVP
 
-Real NVP (Real-valued Non-Volume Preserving) model is similar to NICE, just with added multiplication.
+[Real NVP](https://arxiv.org/pdf/1605.08803.pdf) (Real-valued Non-Volume Preserving) model is similar to NICE. THe difference is that there are two functions **s,t** instead of **m**, and one of them is multiplied by input while the other one is added.
 
 ![Real NVP equations](./docs/real_nvp_equations.png)
 
@@ -64,4 +63,6 @@ Our dataset is MNIST.
 It is a dataset containing 70 000 black and white images of digits. Each image is 28x28 pixels, each pixel is represented as an integer in range from 0 (white) to 255 (black). Dataset is labeled and divided into 60 000 training set and 10 000 test set. As it is a very classical and vell known dataset, we didn't feel the need to change or modify it.
 
 ## Training
+
+More details about models and training can be found in ```/src/model_name``` section.
 
