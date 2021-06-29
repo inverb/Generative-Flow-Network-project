@@ -5,6 +5,7 @@ from tensorflow.keras import datasets, layers, models
 import tensorflow_datasets as tfds
 
 from nice_model import AdditiveLayer, NICEModel, GaussianLoss
+from data_load import MnistLoader
 
 import struct
 from array import array
@@ -17,6 +18,7 @@ num_epochs = 10
 save_epoch = 1
 layer_type = "additive" # could also be multiplicative
 model_path = None
+data_path  = None
 
 # Training
 def train():
