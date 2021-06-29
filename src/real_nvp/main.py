@@ -10,10 +10,10 @@ from real_nvp_autoencoder import AutoEncoder
 
 EMBEDDING_DIM = 20 # The dimension of the embeddings
 FLOW_N = 9 # Number of affine coupling layers
-RNVP_TOPOLOGY = [200] # Size of the hidden layers in each coupling layer
+RNVP_TOPOLOGY = [100] # Size of the hidden layers in each coupling layer
 AE_EPOCHS = 10 # Epochs for training the autoencoder
-NF_EPOCHS = 20 # Epochs for training the normalizing flow
-SEED = 0 # Seed of the random number generator
+NF_EPOCHS = 30 # Epochs for training the normalizing flow
+SEED = 42 # Seed of the random number generator
 BATCH_SIZE = 100 # Batch size
 
 torch.manual_seed(0)

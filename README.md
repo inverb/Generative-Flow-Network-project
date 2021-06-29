@@ -24,26 +24,28 @@ We want to use generative flow to generate images similar to the ones in MNIST. 
     ├── data/                   # dataset path
     ├── docs/                   # notebooks with project reports
     ├── models/                 # links to best models and their training logs
-    ├── scripts/                # scripts used for training and evaluation
+       ├── nice/
+       └── real_nvp/
     └── src/                    # source code of the training and models
 
-## Models
+## Idea
 
 We use two models - NICE and Real NVP. They are both flow models, which means that each of them has a family of flow functions *f*<sub>1</sub>, *f*<sub>2</sub>, ..., *f*<sub>n</sub>,. We want them to have two principles:
 1) we want each *f*<sub>i</sub> to be a bijection and to be easily inversible,
 2) as they are multivariable functions that also output vectors, we want each *f*<sub>i</sub> to have easy to calculate Jacobian determinant. The easiest way to do that is that the Jacobian matrix is either a lower-triangle matrix or an upper-triangle matrix.
 
-The main idea is as follows: during training we give to our script sample **x** from MNIST (or, for that matter any other dataset), and they are proceeded through our flow functions in order: **x**<sub>1</sub> = *f*<sub>1</sub>(**x**), **x**<sub>2</sub> = *f*<sub>2</sub>(**x**<sub>1</sub>) and so on. At the end we get a variable **y** = **x**<sub>n</sub> that can have really complicated distribution, not resembling that of **x**. 
-Then we proceed **y** through inverses of our flow function in reverse order: **y**<sub>n</sub> = *f*<sup>-1</sup><sub>n</sub>(**y**), **y**<sub>n-1</sub> = *f*<sup>-1</sup><sub>n-1</sub>(**y**<sub>n</sub>) and so on. At the end we get a variable **z** = **y**<sub>1</sub>. Target of the network is to tune parameters of the flow functions such that **z** is as similar to **x** as possible. 
-Then, during evaluation we just abandon phase one and, starting from some known distribution (e.x. gaussian) **y** we get new samples.
+The main idea is as follows: during training we give to our script sample **x** from MNIST (or, for that matter any other dataset), and they are proceeded through our flow functions in order: **x**<sub>1</sub> = *f*<sub>1</sub>(**x**), **x**<sub>2</sub> = *f*<sub>2</sub>(**x**<sub>1</sub>) and so on. At the end we get a variable **y** = **x**<sub>n</sub> that can have really complicated distribution, not resembling that of **x**. We want **y** to have normal distribution, therefore our loss is distance from our distribution to gaussian. We calculate it using *log likelihood*.
 
+But what does it have to do with generating? After the training is over, we can use inverse of our network. That means that we can randomly draw some variable **z** from normal distribution and feed it to inverse of our network, as all operations were inversible. The result will be an image with disribution resembling that of our dataset, in this case a digit from MNIST.
+
+## Models
 ### NICE
 
 [NICE](https://arxiv.org/pdf/1410.8516.pdf) (Non-linear Independent Components Estimation) model uses simplest possible flow functions. In every layer some elements **x**<sub>1:d</sub> of input are just written to output, and to other **x**<sub>d:D</sub> some function *m* is applied. This takes as its input elements **x**<sub>1:d</sub> and can be added, mulpiplied or in other form interact with **x**<sub>d:D</sub>. Here is an example when **m** is added to the inputs (which is also the case in our implementation):
 
 ![NICE equations](./docs/nice_equations.png)
 
-Of course positions on which there is identity are different between layers, especially between neighbouring ones. Here function *m* can be arbitrary, as we don't calculate its inversion. Therefore this function is the parameter that our model is learning.
+Of course positions on which there is identity are different between layers, especially between neighbouring ones. Here function **m** can be arbitrary, as we don't calculate its inversion. Therefore this function is the parameter that our model is learning.
 As we can see simplicity of *f*<sub>i</sub> makes inversions simple and it also allows us to use log likelihood as out loss function.
 
 ### Real NVP
