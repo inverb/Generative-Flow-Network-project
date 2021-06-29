@@ -23,7 +23,11 @@ def train():
     if dataset == 'mnist':
         input_dim = 28*28
 
-    with tf.device(device_name):  
+    with tf.device(device_name):
+      mnist_dataloader = MnistLoader(data_path)
+      (im_train, la_train),(im_test, la_test) = mnist_dataloader.load_data()
+      print("Dataset loaded")
+  
       model = NICEModel(input_dim)
       gauss_loss = GaussianLoss()
       
