@@ -6,7 +6,7 @@ Model introduced [here](https://arxiv.org/pdf/1410.8516.pdf) by Dinh et. all. We
 
 NICE (Non-linear Independent Components Estimation) model uses simplest possible flow functions. In every layer some elements **x**<sub>1:d</sub> of input are just written to output, and to other **x**<sub>d:D</sub> some function *m* is applied. This takes as its input elements **x**<sub>1:d</sub> and can be added, mulpiplied or in other form interact with **x**<sub>d:D</sub>. Function **m** caan be added to inputs, multiplied or applied with any easily inversible operation. Here is an example when **m** is added to the inputs (which is also the case in our implementation):
 
-![NICE equations](./docs/nice_equations.png)
+![NICE equations](../../docs/nice_equations.png)
 
 Positions on which there is identity are different between layers, especially between neighbouring ones. Here function **m** can be arbitrary, as we don't calculate its inversion. Therefore this function is the parameter that our model is learning.
 As we can see simplicity of *f*<sub>i</sub> makes inversions simple and it also allows us to use log likelihood as out loss function.
