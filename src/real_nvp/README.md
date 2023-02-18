@@ -5,11 +5,11 @@ As it is more complex than NICE, we didn't write code ourselves, but instead dow
 
 ## Model overlook
 
-The idea of Real NVP (Real-value Non Volume Preserving) model is very similar to NICE models. They differ only on flow function, as instead of just one additive factor **m**, Real NVP introduces two factors **s, t**, where **s** is muliplicative.
+The idea of Real NVP (Real-value Non Volume Preserving) model is very similar to NICE models. They differ only on flow function, as instead of just one additive factor **m**, Real NVP introduces two factors **s, t**, where **s** is multiplicative.
 
 ![Real NVP equations](../../docs/real_nvp_equations.png)
 
-Where &bigodot; is element-wise multiplication. As we can see above, introducing multiplication don't make inversing functions any harder, and yet it can improve results.
+Here &bigodot; is element-wise multiplication. As we can see above, introducing multiplication doesn't make inversing functions any harder, and yet it can improve results.
 
 ## Autoencoder
 
@@ -17,7 +17,7 @@ What is unique about the implementation we used is that it additionally trains a
 
 ![architecture](../../docs/real_nvp_architecture.png)
 
-It turns out to vastly improve qualityof generated content, as output from encoder is much closer to natural distributions and therefore easier to approximate by flow, than raw images. The most surprising thing is that even big reduction in number of dimensions of input don't hurt output results, as the network we settled on instead of standard MNIST 28x28 pictures outputs embeddings of size 20.
+It turns out to vastly improve quality of generated content, as output from encoder is much closer to natural distributions and therefore easier to approximate by flow, than raw images. The most surprising thing is that even big reduction in number of dimensions of input doesn't hurt output results, as the network we settled on instead of standard MNIST 28x28 pictures outputs embeddings of size 20.
 
 ## Training 
 

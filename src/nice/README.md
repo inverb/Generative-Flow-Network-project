@@ -4,7 +4,7 @@ Model introduced [here](https://arxiv.org/pdf/1410.8516.pdf) by Dinh et. all. We
 
 ## Model overlook
 
-NICE (Non-linear Independent Components Estimation) model uses simplest possible flow functions. In every layer some elements **x**<sub>1:d</sub> of input are just written to output, and to other **x**<sub>d:D</sub> some function *m* is applied. This takes as its input elements **x**<sub>1:d</sub> and can be added, mulpiplied or in other form interact with **x**<sub>d:D</sub>. Function **m** caan be added to inputs, multiplied or applied with any easily inversible operation. Here is an example when **m** is added to the inputs (which is also the case in our implementation):
+NICE (Non-linear Independent Components Estimation) model uses simplest possible flow functions. In every layer some elements **x**<sub>1:d</sub> of input are just written to output, and to other **x**<sub>d+1:D</sub> some function *m* is applied. This takes as its input elements **x**<sub>1:d</sub> and can be added, multiplied or in other form interact with **x**<sub>d+1:D</sub>. Function **m** can be added to inputs, multiplied or applied with any easily inversible operation. Here is an example when **m** is added to the inputs (which is also the case in our implementation):
 
 ![NICE equations](../../docs/nice_equations.png)
 
@@ -21,6 +21,6 @@ python main.py
 
 At the beginning of ```main.py``` file there are several parameters which can be changed to upgrade quality of results.
 
-Our model has 6 blocks. In blocks with even numbers, the first half of inputs is written to output and to the second half we add **m** functions, in blocks with odd numbers it's the other way around. Each block contains two-layered neural network with ReLU activation function. Each layer has the same dimensions as the input (in this case half of the input, as we always feed to the block only half of the inputs). We trained our model through 10 epochs, with evaluation after each epoch. Results it returned are worse than Real NVP, but still satisfying.
+Our model has 6 blocks. In blocks with even numbers, the first half of inputs is written to output and to the second half we add **m** functions, in blocks with odd numbers it's the other way around. Each block contains two-layered neural network with ReLU activation function. Each layer has the same dimensions as the input (in this case half of the input, as we always feed to the block only half of the inputs). We trained our model through 10 epochs, with evaluation after each epoch. Results returned are worse than those obtained by Real NVP, but still satisfying.
 
 ![results](../../docs/result_nice.png)
